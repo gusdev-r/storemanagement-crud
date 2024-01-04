@@ -11,6 +11,7 @@ import org.mapstruct.MappingConstants;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CPMapper {
@@ -26,6 +27,8 @@ public interface CPMapper {
     ProductPostRequest toProductPostRequest(Long idCustomer, ProductPostRequest product);
     Product toProductToPostRequest(Long idCustomer, ProductPostRequest product);
     Product toProduct (ProductPutRequest request);
+
+    ProductGetResponse toProductGetResponseOptional(Optional<Product> productOptional);
 
 
 }

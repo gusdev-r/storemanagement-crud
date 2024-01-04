@@ -23,21 +23,21 @@ public class ProductController {
     private final ProductMapper mapper;
     private final ProductService productService;
 
-    @GetMapping("ByName")
+    @GetMapping(path = "/p-name")
     public ResponseEntity<List<ProductGetResponse>> filterProductByName(@RequestParam(required = false) String name) {
         log.info("Request received to verify in the product list with param name '{}'", name);
         var productFound = productService.findByName(name);
         var response = mapper.toListProductGetResponse(productFound);
         return ResponseEntity.ok(response);
     }
-    @GetMapping("findAll")
+    @GetMapping(path = "/p-all")
     public ResponseEntity<List<ProductGetResponse>> findAllProductAvailableInList() {
         log.info("Request to return all the list of the product, no param requested");
         var productsList = productService.findAll();
         var response = mapper.toListProductGetResponse(productsList);
         return ResponseEntity.ok(response);
     }
-    @GetMapping("{id}")
+    @GetMapping(path = "/p-id/{id}")
     public ResponseEntity<ProductGetResponse> findProductById(@PathVariable Long id) {
         log.info("Requested receive to search the product, param id '{}'", id);
         var productFound = productService.findById(id);
@@ -51,7 +51,7 @@ public class ProductController {
         var response = mapper.toProductPostResponse(product); //catching the response
         return ResponseEntity.status(HttpStatus.CREATED).body(response); //returned that it was created and the body will see the new product created
     }
-    @PutMapping
+    @PutMapping(path = "/p-update")
     public ResponseEntity<Void> updateProduct(@RequestBody ProductPutRequest productRequest) {
         log.info("Request receive to update the product '{}'", productRequest);
 
@@ -60,7 +60,7 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping(path = "/p-delete/{id}")
     public ResponseEntity<Void> deleteProductById(@PathVariable Long id) {
         log.info("Request receive to delete the product by the param id. '{}'", id);
         productService.delete(id);

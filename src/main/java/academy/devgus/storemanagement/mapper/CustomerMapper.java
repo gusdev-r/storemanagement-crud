@@ -16,6 +16,8 @@ import java.util.Optional;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CustomerMapper {
     CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
+    @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")
+    @Mapping(target = "idClient", expression = "java(java.util.concurrent.ThreadLocalRandom.current().nextLong(100_000))")
 
     //transform the item (id) in a domain (map domain objects)
     //@Mapping(target = "idClient", expression = "java(java.time.LocalDateTime.now)")
@@ -27,7 +29,7 @@ public interface CustomerMapper {
     List<CustomerGetResponse> toListCustomerGetResponse(List<Customer> customers);
     Customer toCustomer (CustomerPutRequest request); //option to update or something like that
 
-    CustomerGetResponse toCustomerGetResponseOptional(Optional<Customer> customer);
+    CustomerGetResponse toCustomerGetResponse(Customer customer);
 
 
 }

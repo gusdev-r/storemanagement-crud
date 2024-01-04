@@ -14,6 +14,7 @@ import java.util.Optional;
 @Log4j2
 public class CPRepository {
     private final CustomerRepository cRepository;
+
     private final CustomerData cData;
 
     public List<Customer> findByName (String name) {
@@ -23,8 +24,8 @@ public class CPRepository {
     public List<Customer> findByEmail(String email) {
         return cData.getCustomersList().stream().filter(customer -> customer.getEmail().equalsIgnoreCase(email)).toList();
     }
-    public List<Customer> findByCpf(String cpf) {
-        return cData.getCustomersList().stream().filter(customer -> customer.getCpf().equalsIgnoreCase(cpf)).toList();
+    public Optional<Customer> findByCpf(Long cpf) {
+        return cData.getCustomersList().stream().filter(customer -> customer.getCpf().equals(cpf)).findFirst();
     }
 
     public Optional<Customer> findById(Long id) {
@@ -62,9 +63,9 @@ public class CPRepository {
         Customer c = (Customer) findByEmail(email);
         return c.getOrders();
     }
-    public List<Product> findOrdersByTheCustomerCpf (String cpf) {
-        Customer c = (Customer) findByCpf(cpf);
-        return c.getOrders();
+    public List<Product> findOrdersByTheCustomerCpf (Long cpf) {
+        Optional<Customer> c = findByCpf(cpf);
+        return c.get().getOrders();
     }
     public List<Product> findAllOrdersByTheCustomerId(Long idCustomer) {
         Optional<Customer> c = findById(idCustomer);
@@ -76,6 +77,7 @@ public class CPRepository {
         Customer customer = c.get();//orElseThrow(() -> new RuntimeException("The search go bad, try something later."));
         return customer.getOrders().stream().filter(p -> p.getId().equals(idProduct)).findFirst();
     }
+
 
     //search the customer and after search the specified order/product in the orders list (search on customer.getOrders)
     public Product findTheProductInTheListOfClient(String clientName, Long productId) {

@@ -12,7 +12,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Log4j2
 public class ProductRepository {
-    private ProductData  productData;
+    private final ProductData productData;
 
     //these methods will be used at the service to work with db of products, changes or something like that
 
